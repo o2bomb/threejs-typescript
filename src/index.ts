@@ -1,26 +1,60 @@
 import * as THREE from "three";
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+window.addEventListener("load", init, false);
+// window.addEventListener("resize", handleWindowResize, false);
+// document.addEventListener("mousemove", handleMouseMove, false);
 
-const canvas = document.querySelector<HTMLCanvasElement>("#c");
-const renderer = new THREE.WebGLRenderer({ canvas });
-// renderer.setSize( window.innerWidth, window.innerHeight );
+let scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.Renderer;
+let cube: THREE.Mesh;
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+function init() {
+  scene = createScene();
+  camera = createCamera();
+  renderer = createRenderer();
 
-camera.position.z = 5;
+  const geometry = new THREE.BoxGeometry();
+  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
+
+  animate();
+}
 
 function animate() {
-  requestAnimationFrame( animate );
-  
+  requestAnimationFrame(animate);
+
   cube.rotation.x += 0.01;
   cube.rotation.y += 0.01;
 
-	renderer.render( scene, camera );
+  renderer.render(scene, camera);
 }
 
-animate();
+function createScene() {
+  const scene = new THREE.Scene();
+
+  return scene;
+}
+
+function createCamera() {
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  const fieldOfView = 60;
+  const nearPlane = 1;
+  const farPlane = 10000;
+  const camera = new THREE.PerspectiveCamera(
+    fieldOfView,
+    aspectRatio,
+    nearPlane,
+    farPlane
+  );
+
+  camera.position.z = 5;
+  return camera;
+}
+
+function createRenderer() {
+  const canvas = document.querySelector<HTMLCanvasElement>("#c");
+  const renderer = new THREE.WebGLRenderer({ canvas });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  return renderer;
+}

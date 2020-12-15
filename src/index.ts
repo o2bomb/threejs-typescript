@@ -1,10 +1,12 @@
 import * as THREE from "three";
 
 window.addEventListener("load", init, false);
-// window.addEventListener("resize", handleWindowResize, false);
+window.addEventListener("resize", handleWindowResize, false);
 // document.addEventListener("mousemove", handleMouseMove, false);
 
-let scene: THREE.Scene, camera: THREE.Camera, renderer: THREE.Renderer;
+let WIDTH = window.innerWidth;
+let HEIGHT = window.innerHeight;
+let scene: THREE.Scene, camera: THREE.PerspectiveCamera, renderer: THREE.Renderer;
 let cube: THREE.Mesh;
 
 function init() {
@@ -13,11 +15,20 @@ function init() {
   renderer = createRenderer();
 
   const geometry = new THREE.BoxGeometry();
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  const material = new THREE.MeshNormalMaterial();
   cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
 
   animate();
+}
+
+function handleWindowResize() {
+  WIDTH = window.innerWidth;
+  HEIGHT = window.innerHeight;
+
+  renderer.setSize(WIDTH, HEIGHT);
+  camera.aspect = WIDTH / HEIGHT;
+  camera.updateProjectionMatrix();
 }
 
 function animate() {

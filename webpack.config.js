@@ -15,6 +15,9 @@ module.exports = {
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
+  watchOptions: {
+    ignored: 'node_modules/**'
+  },
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist")

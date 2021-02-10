@@ -3,5 +3,4 @@ This is project contains boilerplate code for a three.js application with type c
 
 ## Running the project
 1. `yarn install` to download required packages
-2. `yarn watch` to compile .ts files into /dist/bundle.js
-3. in another terminal, `yarn dev` to start the live server
+2. `yarn dev` to watch for files and start the live server

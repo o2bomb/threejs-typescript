@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 import "./style.css";
 
@@ -10,12 +11,18 @@ let WIDTH = window.innerWidth;
 let HEIGHT = window.innerHeight;
 let scene: THREE.Scene, camera: THREE.PerspectiveCamera, renderer: THREE.Renderer;
 let cube: THREE.Mesh;
+let orbitControls: OrbitControls;
 
 function init() {
   scene = createScene();
   camera = createCamera();
   renderer = createRenderer();
 
+  // CONTROLS
+  orbitControls = new OrbitControls(camera, renderer.domElement);
+  orbitControls.enableDamping = true;
+
+  // CUBE
   const geometry = new THREE.BoxGeometry();
   const material = new THREE.MeshNormalMaterial();
   cube = new THREE.Mesh(geometry, material);

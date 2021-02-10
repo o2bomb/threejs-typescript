@@ -1,5 +1,7 @@
 import * as THREE from "three";
 
+import "./style.css";
+
 window.addEventListener("load", init, false);
 window.addEventListener("resize", handleWindowResize, false);
 // document.addEventListener("mousemove", handleMouseMove, false);

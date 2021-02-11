@@ -31,7 +31,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: "ts-loader",
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
 
       // CSS
@@ -65,13 +65,19 @@ module.exports = {
           },
         ],
       },
+
+      // Shaders
+      {
+        test: /\.(glsl|vs|fs|vert|frag)$/,
+        exclude: /node_modules/,
+        use: ["raw-loader"],
+      },
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: [".tsx", ".ts", ".js"],
   },
   watchOptions: {
-    ignored: 'node_modules/**'
+    ignored: "node_modules/**",
   },
-  
 };

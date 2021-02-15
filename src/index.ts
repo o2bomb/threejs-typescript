@@ -29,7 +29,7 @@ function init() {
   // CAMERA
   const aspectRatio = window.innerWidth / window.innerHeight;
   const fieldOfView = 60;
-  const nearPlane = 1;
+  const nearPlane = 0.1;
   const farPlane = 1000;
   const camera = new THREE.PerspectiveCamera(
     fieldOfView,
@@ -37,7 +37,7 @@ function init() {
     nearPlane,
     farPlane
   );
-  camera.position.z = 5;
+  camera.position.z = 2;
 
   // RENDERER
   const canvas = document.querySelector<HTMLCanvasElement>("#c");

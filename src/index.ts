@@ -54,9 +54,11 @@ function init() {
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
 
+  const clock =  new THREE.Clock();
   const animate = () => {
     requestAnimationFrame(animate);
 
+    const elapsedTime = clock.getElapsedTime();
     orbitControls.update();
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;

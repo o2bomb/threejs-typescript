@@ -8,3 +8,4 @@ This is project contains boilerplate code for a three.js application with type c
 ## Deploying on GitHub Pages
 1. `yarn build` to create build files
 2. `./deploy.sh` to run the deployment script
+3. In the GitHub repo settings, point GitHub Pages to the branch specified in the previous step

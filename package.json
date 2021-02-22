@@ -1,7 +1,7 @@
 {
   "name": "threejs-template",
   "version": "1.0.0",
-  "description": "three.js w/ TypeScript Template",
+  "description": "Three.js w/ TypeScript Template",
   "main": "index.js",
   "license": "MIT",
   "scripts": {

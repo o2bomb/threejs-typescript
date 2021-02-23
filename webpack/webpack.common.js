@@ -3,11 +3,20 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
-const generateHtmlPlugin = (title) => {
+const generateHtmlPlugin = (page) => {
+  if (page === "index") {
+    return new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, `../src/${page}.html`),
+      filename: `${page}.html`,
+      minify: true,
+      chunks: [page]
+    });  
+  }
   return new HtmlWebpackPlugin({
-    template: path.resolve(__dirname, `../src/pages/${title.toLowerCase()}.html`),
-    filename: `${title}.html`,
+    template: path.resolve(__dirname, `../src/pages/${page}/${page}.html`),
+    filename: `${page}.html`,
     minify: true,
+    chunks: [page]
   });
 }
 
@@ -19,22 +28,30 @@ const populateHtmlPlugins = (pagesArray) => {
   return res;
 }
 
+const populateEntryPoints = (pagesArray) => {
+  const res = {};
+  pagesArray.forEach(page => {
+    if (page === "index") {
+      res[page] = path.resolve(__dirname, `../src/${page}.ts`);
+    } else {
+      res[page] = path.resolve(__dirname, `../src/pages/${page}/${page}.ts`);
+    }
+  })
+  return res;
+}
+
 // Array of page names (omit .html)
-const pages = [];
+const pages = ["index"];
 
 module.exports = {
-  entry: path.resolve(__dirname, "../src/index.ts"),
+  entry: populateEntryPoints(pages),
   output: {
-    filename: "bundle.[contenthash].js",
+    filename: "[name].bundle.js",
     path: path.resolve(__dirname, "../dist"),
   },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [{ from: path.resolve(__dirname, "../src/assets") }],
-    }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "../src/index.html"),
-      minify: true,
     }),
     new MiniCSSExtractPlugin(),
     ...populateHtmlPlugins(pages)

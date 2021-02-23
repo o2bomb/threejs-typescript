@@ -3,6 +3,25 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
+const generateHtmlPlugin = (title) => {
+  return new HtmlWebpackPlugin({
+    template: path.resolve(__dirname, `../src/pages/${title.toLowerCase()}.html`),
+    filename: `${title}.html`,
+    minify: true,
+  });
+}
+
+const populateHtmlPlugins = (pagesArray) => {
+  const res = [];
+  pagesArray.forEach(page => {
+    res.push(generateHtmlPlugin(page));
+  })
+  return res;
+}
+
+// Array of page names (omit .html)
+const pages = [];
+
 module.exports = {
   entry: path.resolve(__dirname, "../src/index.ts"),
   output: {
@@ -11,13 +30,14 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin({
-      patterns: [{ from: path.resolve(__dirname, "../static") }],
+      patterns: [{ from: path.resolve(__dirname, "../src/assets") }],
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../src/index.html"),
       minify: true,
     }),
     new MiniCSSExtractPlugin(),
+    ...populateHtmlPlugins(pages)
   ],
   module: {
     rules: [
@@ -42,12 +62,12 @@ module.exports = {
 
       // Images
       {
-        test: /\.(jpg|png|gif|svg)$/,
+        test: /\.(png|svg|jpg|jpeg|gif)$/,
         use: [
           {
             loader: "file-loader",
             options: {
-              outputPath: "assets/images/",
+              name: "[name].[ext]?[hash]",
             },
           },
         ],
@@ -60,7 +80,7 @@ module.exports = {
           {
             loader: "file-loader",
             options: {
-              outputPath: "assets/fonts/",
+              name: "[name].[ext]?[hash]",
             },
           },
         ],

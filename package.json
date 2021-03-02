@@ -30,6 +30,6 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "three": "^0.123.0"
+    "three": "^0.125.0"
   }
 }

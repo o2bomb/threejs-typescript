@@ -1,7 +1,11 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
-const path = require("path");
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCSSExtractPlugin from "mini-css-extract-plugin";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const generateHtmlPlugin = (page) => {
   if (page === "index") {
@@ -9,41 +13,41 @@ const generateHtmlPlugin = (page) => {
       template: path.resolve(__dirname, `../src/${page}.html`),
       filename: `${page}.html`,
       minify: true,
-      chunks: [page]
-    });  
+      chunks: [page],
+    });
   }
   return new HtmlWebpackPlugin({
     template: path.resolve(__dirname, `../src/pages/${page}/${page}.html`),
     filename: `${page}.html`,
     minify: true,
-    chunks: [page]
+    chunks: [page],
   });
-}
+};
 
 const populateHtmlPlugins = (pagesArray) => {
   const res = [];
-  pagesArray.forEach(page => {
+  pagesArray.forEach((page) => {
     res.push(generateHtmlPlugin(page));
-  })
+  });
   return res;
-}
+};
 
 const populateEntryPoints = (pagesArray) => {
   const res = {};
-  pagesArray.forEach(page => {
+  pagesArray.forEach((page) => {
     if (page === "index") {
       res[page] = path.resolve(__dirname, `../src/${page}.ts`);
     } else {
       res[page] = path.resolve(__dirname, `../src/pages/${page}/${page}.ts`);
     }
-  })
+  });
   return res;
-}
+};
 
 // Array of page names (omit .html)
 const pages = ["index"];
 
-module.exports = {
+const config = {
   entry: populateEntryPoints(pages),
   output: {
     filename: "[name].bundle.js",
@@ -54,7 +58,7 @@ module.exports = {
       patterns: [{ from: path.resolve(__dirname, "../src/assets") }],
     }),
     new MiniCSSExtractPlugin(),
-    ...populateHtmlPlugins(pages)
+    ...populateHtmlPlugins(pages),
   ],
   module: {
     rules: [
@@ -118,3 +122,5 @@ module.exports = {
     ignored: "node_modules/**",
   },
 };
+
+export default config;

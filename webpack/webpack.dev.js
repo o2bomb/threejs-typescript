@@ -1,39 +1,38 @@
-const { merge } = require("webpack-merge");
-const ip = require("internal-ip");
-const portFinderSync = require("portfinder-sync");
-const path = require("path");
+import path from "path";
+import portFinderSync from "portfinder-sync";
+import { merge } from "webpack-merge";
+import commonConfiguration from "./webpack.common.js";
 
-const commonConfiguration = require("./webpack.common.js");
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const infoColor = (_message) => {
   return `\u001b[1m\u001b[34m${_message}\u001b[39m\u001b[22m`;
 };
 
-module.exports = merge(commonConfiguration, {
+const config = merge(commonConfiguration, {
   mode: "development",
   devServer: {
     host: "0.0.0.0",
     port: portFinderSync.getPort(8080),
-    contentBase: path.join(__dirname, "dist"),
-    watchContentBase: true,
     open: true,
     https: false,
-    useLocalIp: true,
-    disableHostCheck: true,
-    overlay: true,
-    noInfo: true,
-    after: function (app, server, compiler) {
-      const port = server.options.port;
-      const https = server.options.https ? "s" : "";
-      const localIp = ip.v4.sync();
-      const domain1 = `http${https}://${localIp}:${port}`;
-      const domain2 = `http${https}://localhost:${port}`;
+    // after: function (app, server, compiler) {
+    //   const port = server.options.port;
+    //   const https = server.options.https ? "s" : "";
+    //   const localIp = internalIpV4Sync();
+    //   const domain1 = `http${https}://${localIp}:${port}`;
+    //   const domain2 = `http${https}://localhost:${port}`;
 
-      console.log(
-        `Project running at:\n  - ${infoColor(domain1)}\n  - ${infoColor(
-          domain2
-        )}`
-      );
-    },
+    //   console.log(
+    //     `Project running at:\n  - ${infoColor(domain1)}\n  - ${infoColor(
+    //       domain2
+    //     )}`
+    //   );
+    // },
   },
 });
+
+export default config;
